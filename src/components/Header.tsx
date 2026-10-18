@@ -4,6 +4,7 @@ import Logo from "./Logo";
 const nav = [
   { href: "#nome", label: "O nome" },
   { href: "#espacos", label: "Os dois espaços" },
+  { href: "#como", label: "Como funciona" },
   { href: "#agenda", label: "Agenda" },
   { href: "#videos", label: "Vídeos" },
   { href: "#faq", label: "Dúvidas" },

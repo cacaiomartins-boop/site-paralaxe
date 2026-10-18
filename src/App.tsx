@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Manifesto from "./components/Manifesto";
 import Espacos from "./components/Espacos";
+import ComoFunciona from "./components/ComoFunciona";
 import Agenda from "./components/Agenda";
 import Videos from "./components/Videos";
 import Referencias from "./components/Referencias";
@@ -67,6 +68,7 @@ export default function App() {
         <Hero />
         <Manifesto />
         <Espacos />
+        <ComoFunciona />
         <Agenda />
         <Videos />
         <Referencias />

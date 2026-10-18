@@ -5,7 +5,12 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+  }
+  /* Computador: cada seção ocupa uma tela e a rolagem encaixa nela. */
+  @media (min-width: 1024px) and (min-height: 620px) {
+    html {
+      scroll-snap-type: y mandatory;
+    }
   }
   body {
     @apply bg-papel font-sans text-tinta antialiased;
@@ -29,6 +34,15 @@
 @layer components {
   .wrap {
     @apply mx-auto w-full max-w-site px-5 sm:px-8;
+  }
+  /* Uma seção = uma tela. O topo reserva espaço para o cabeçalho fixo. */
+  .screen {
+    @apply relative flex min-h-[100svh] snap-start flex-col justify-center pb-8 pt-[5rem];
+  }
+  /* Título de seção: acompanha a largura e a altura da tela. */
+  .h-sec {
+    @apply font-display font-light leading-[1.02] tracking-[-0.02em];
+    font-size: clamp(2rem, min(4.4vw, 6.8vh), 3.8rem);
   }
   .kicker {
     @apply font-mono text-[0.72rem] uppercase tracking-[0.22em];

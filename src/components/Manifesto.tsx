@@ -12,7 +12,7 @@ function Observer() {
 
   return (
     <div className="reveal rounded-[2rem] bg-tinta p-5 text-papel sm:p-8">
-      <div className="relative h-[220px] overflow-hidden rounded-[1.4rem] bg-noite sm:h-[280px]">
+      <div className="relative h-[220px] overflow-hidden rounded-[1.4rem] bg-noite lg:h-[min(34vh,300px)]">
         <svg viewBox="0 0 600 280" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           {/* fundo: arcos (move pouco) */}
           <g style={{ transform: `translateX(${v * -10}px)` }} stroke="rgba(244,236,224,.22)" strokeWidth="1.4" fill="none">
@@ -63,23 +63,23 @@ function Observer() {
 
 export default function Manifesto() {
   return (
-    <section id="nome" className="relative bg-papel py-24 sm:py-32">
-      <div className="wrap grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
+    <section id="nome" className="screen bg-papel">
+      <div className="wrap grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
         <div>
-          <p className="kicker reveal mb-6 text-ferrugem">01 · O nome</p>
+          <p className="kicker reveal mb-5 text-ferrugem">01 · O nome</p>
           <div className="reveal font-mono text-sm leading-relaxed text-tinta/60" style={{ "--d": "80ms" } as React.CSSProperties}>
             <span className="text-tinta">pa·ra·la·xe</span> <i>s.f.</i>
             <br />
             deslocamento aparente de um objeto, causado pela mudança de posição de quem o observa.
           </div>
           <h2
-            className="reveal mt-8 text-[clamp(2.3rem,5vw,4rem)] font-light leading-[1.02] tracking-[-0.02em]"
+            className="h-sec reveal mt-6"
             style={{ "--d": "160ms" } as React.CSSProperties}
           >
             Mudar de lugar muda o que <span className="italic text-ferrugem">se escuta.</span>
           </h2>
           <div
-            className="reveal mt-8 max-w-xl space-y-5 text-lg leading-relaxed text-tinta/80"
+            className="reveal mt-6 max-w-xl space-y-4 text-[1.02rem] leading-relaxed text-tinta/80"
             style={{ "--d": "240ms" } as React.CSSProperties}
           >
             <p>
@@ -88,10 +88,9 @@ export default function Manifesto() {
               texto com outra pergunta.
             </p>
             <p>
-              O Paralaxe nasceu desse vai e vem. De um lado, o grupo de estudos, que coloca a
-              teoria para conversar com a prática. Do outro, a supervisão em grupo, onde casos
-              clínicos são pensados entre pares. Cada encontro é um convite para trocar de
-              posição e ver a mesma coisa de outro ângulo.
+              O Paralaxe nasceu desse vai e vem: de um lado, o grupo de estudos; do outro, a
+              supervisão em grupo, onde casos clínicos são pensados entre pares. Cada encontro é
+              um convite para trocar de posição e ver a mesma coisa de outro ângulo.
             </p>
           </div>
         </div>

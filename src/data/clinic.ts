@@ -33,7 +33,7 @@ export const spaces = {
     kicker: "Espaço 01",
     name: "Psicanálise em Paralaxe",
     subtitle: "Grupo de estudos teóricos",
-    text: "Lemos autores da psicanálise e fazemos a teoria conversar com a clínica, com a ciência e com o nosso tempo. Cada encontro começa com uma exposição que provoca o debate e deixa, de propósito, lacunas em aberto: o texto não é para ser esgotado, é para render pergunta.",
+    text: "Lemos autores da psicanálise e fazemos a teoria conversar com a clínica, a ciência e o nosso tempo. Cada encontro abre com uma exposição e deixa lacunas em aberto, para render pergunta.",
     facts: [
       { label: "Quando", value: "Terças-feiras, 20h30" },
       { label: "Onde", value: "On-line, pelo Google Meet" },
@@ -48,7 +48,7 @@ export const spaces = {
     kicker: "Espaço 02",
     name: "Escuta Clínica",
     subtitle: "Supervisão psicanalítica em grupo",
-    text: "Um espaço de supervisão e interlocução voltado à escuta de casos clínicos, à elaboração de impasses e à discussão sobre a direção do tratamento. A cada encontro, um caso é trazido ao grupo e pensado entre pares.",
+    text: "Um espaço de supervisão e interlocução voltado à escuta de casos clínicos, à elaboração de impasses e à direção do tratamento. A cada encontro, um caso é trazido ao grupo e pensado entre pares.",
     facts: [
       { label: "Quando", value: "Quartas-feiras, 20h às 21h30" },
       { label: "Onde", value: "On-line, pelo Google Meet" },

@@ -2,7 +2,7 @@ import { combinados } from "../data/clinic";
 
 export default function Combinados() {
   return (
-    <section id="combinados" className="relative overflow-hidden bg-ferrugem py-24 text-papel sm:py-28">
+    <section id="combinados" className="screen overflow-hidden bg-ferrugem text-papel">
       <div
         className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full border border-papel/20"
         aria-hidden="true"
@@ -12,12 +12,12 @@ export default function Combinados() {
         aria-hidden="true"
       />
       <div className="wrap relative">
-        <p className="kicker reveal mb-6 text-sol">06 · Combinados</p>
-        <h2 className="reveal max-w-2xl text-[clamp(2.2rem,4.6vw,3.6rem)] font-light leading-[1.04] tracking-[-0.02em]">
+        <p className="kicker reveal mb-4 text-sol">07 · Combinados</p>
+        <h2 className="h-sec reveal max-w-2xl">
           Um espaço de escuta pede <span className="italic text-sol">cuidado</span>
         </h2>
 
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-3xl bg-papel/20 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 grid gap-px overflow-hidden rounded-3xl bg-papel/20 sm:grid-cols-2 lg:grid-cols-4">
           {combinados.map((c, i) => (
             <li
               key={c.t}

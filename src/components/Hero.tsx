@@ -13,9 +13,9 @@ export default function Hero() {
     <section
       id="topo"
       ref={parallax}
-      className="relative isolate overflow-hidden bg-noite text-papel"
+      className="relative isolate snap-start overflow-hidden bg-noite text-papel"
     >
-      <div ref={pointerRef} className="relative min-h-[100svh]">
+      <div ref={pointerRef} className="relative flex min-h-[100svh] flex-col">
         {/* Camada 1: sol ao fundo (move devagar) */}
         <div
           data-speed="0.12"
@@ -60,21 +60,24 @@ export default function Hero() {
           <path d="M200 40v-24M20 230h360" />
         </svg>
 
-        {/* Camada 3: palavra gigante em dois olhares */}
-        <div
-          data-speed="0.32"
-          className="pointer-events-none absolute inset-x-0 top-[11vh] select-none will-change-transform"
-          aria-hidden="true"
-        >
-          <div className="relative mx-auto w-full max-w-[1500px] overflow-visible text-center">
+        {/* Espaço do cabeçalho */}
+        <div className="h-16 shrink-0" />
+
+        {/* Faixa própria da palavra: ela ocupa só o espaço livre acima do título */}
+        <div className="pointer-events-none relative z-0 flex min-h-[7.5rem] flex-1 select-none items-center justify-center">
+          <div
+            data-speed="-0.2"
+            className="relative pb-5 will-change-transform"
+            aria-hidden="true"
+          >
             <span
-              className="outline-word-sol absolute inset-0 block font-display text-[19vw] font-light italic leading-none tracking-[-0.04em] transition-transform duration-300 ease-out"
+              className="outline-word-sol absolute inset-0 block whitespace-nowrap font-display text-[min(25vw,26vh)] font-light italic leading-[0.95] tracking-[-0.04em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
               style={{ transform: `translate(${dx}px, ${dy}px)` }}
             >
               paralaxe
             </span>
             <span
-              className="outline-word relative block font-display text-[19vw] font-light italic leading-none tracking-[-0.04em] transition-transform duration-300 ease-out"
+              className="outline-word relative block whitespace-nowrap font-display text-[min(25vw,26vh)] font-light italic leading-[0.95] tracking-[-0.04em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
               style={{ transform: `translate(${-dx}px, ${-dy}px)` }}
             >
               paralaxe
@@ -83,19 +86,19 @@ export default function Hero() {
         </div>
 
         {/* Conteúdo */}
-        <div className="wrap relative z-10 flex min-h-[100svh] flex-col justify-end pb-14 pt-32 sm:pb-20">
-          <p className="kicker mb-6 text-sol">Estudos · Supervisão · Psicanálise</p>
-          <h1 className="max-w-4xl text-[clamp(3.2rem,9.5vw,8.2rem)] font-light leading-[0.92] tracking-[-0.03em]">
+        <div className="wrap relative z-10 pb-8 sm:pb-12">
+          <h1 className="max-w-4xl text-[clamp(2.7rem,min(7.4vw,10.5vh),6.6rem)] font-light leading-[0.94] tracking-[-0.03em]">
             Da teoria
             <br />
             <span className="italic text-sol">à escuta.</span>
           </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-papel/80 sm:text-xl">
+          <p className="kicker mt-4 text-papel/80 sm:text-sol">Estudos · Supervisão · Psicanálise</p>
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-papel/80 sm:text-lg">
             Estudos teóricos e supervisão clínica em grupo para quem estuda
             psicanálise e quer atravessar o texto até a clínica.
           </p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <a href="#inscricao" className="btn btn-sol">
               Quero participar
             </a>
@@ -104,7 +107,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <dl className="mt-14 grid max-w-3xl grid-cols-1 gap-5 border-t border-papel/15 pt-6 font-mono text-[0.78rem] uppercase tracking-[0.14em] text-papel/60 sm:grid-cols-3">
+          <dl className="mt-8 hidden max-w-3xl grid-cols-3 gap-5 border-t border-papel/15 pt-5 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-papel/60 sm:grid [@media(max-height:740px)]:hidden">
             <div>
               <dt className="text-papel/40">Formato</dt>
               <dd className="mt-1 text-papel">On-line, Google Meet</dd>
@@ -124,7 +127,7 @@ export default function Hero() {
           href={links.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute bottom-6 right-5 z-10 hidden font-mono text-[0.7rem] uppercase tracking-[0.3em] text-papel/50 transition hover:text-sol sm:right-8 md:block"
+          className="absolute bottom-6 right-5 z-10 hidden font-mono text-[0.7rem] uppercase tracking-[0.3em] text-papel/50 transition hover:text-sol sm:right-8 lg:block"
         >
           @paralaxeslab
         </a>
