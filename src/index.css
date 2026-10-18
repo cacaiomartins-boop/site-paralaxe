@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-papel font-sans text-tinta antialiased;
+    font-feature-settings: "ss01", "kern";
+  }
+  ::selection {
+    background: #f0b429;
+    color: #1c1511;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+  :focus-visible {
+    outline: 2px solid #f0b429;
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-site px-5 sm:px-8;
+  }
+  .kicker {
+    @apply font-mono text-[0.72rem] uppercase tracking-[0.22em];
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[0.95rem] font-semibold transition duration-300;
+  }
+  .btn-sol {
+    @apply bg-sol text-tinta hover:-translate-y-0.5 hover:bg-[#f7c545];
+  }
+  .btn-ink {
+    @apply bg-tinta text-papel hover:-translate-y-0.5 hover:bg-tijolo;
+  }
+  .btn-line {
+    @apply border border-current hover:-translate-y-0.5 hover:bg-white/10;
+  }
+}
+
+/* Textura de papel sobre tudo */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Palavra vazada gigante do hero */
+.outline-word {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(244, 236, 224, 0.32);
+}
+.outline-word-sol {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(240, 180, 41, 0.55);
+}
+
+/* Revelar ao rolar */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Slider "mude de lugar" */
+input[type="range"].observer {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.9;
+  border-radius: 2px;
+}
+input[type="range"].observer::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f0b429;
+  border: 2px solid #1c1511;
+  cursor: grab;
+  box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.25);
+}
+input[type="range"].observer::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f0b429;
+  border: 2px solid #1c1511;
+  cursor: grab;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .plus {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  [data-speed] {
+    transform: none !important;
+  }
+}
