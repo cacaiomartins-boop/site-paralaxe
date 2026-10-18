@@ -8,7 +8,7 @@ function Poster({ v, onOpen }: { v: Video; onOpen: () => void }) {
     <figure className="reveal mx-auto w-full lg:w-auto">
       <button
         onClick={onOpen}
-        className="group relative flex aspect-[9/16] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-[1.2rem] p-3 text-center ring-1 ring-papel/10 sm:rounded-[1.6rem] sm:p-5 lg:h-[min(58vh,540px)] lg:w-auto lg:gap-4"
+        className="group relative flex aspect-[9/16] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-[1.2rem] p-3 text-center ring-1 ring-papel/10 sm:rounded-[1.6rem] sm:p-5 lg:h-[min(76vh,620px)] lg:w-auto lg:gap-4"
         style={{
           background:
             "radial-gradient(circle at 50% 38%, rgba(240,180,41,.95) 0 14%, rgba(201,83,31,.9) 34%, #2a1a14 78%)",

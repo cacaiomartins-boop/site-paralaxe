@@ -3,7 +3,7 @@ import { links, site } from "../data/clinic";
 
 export default function Footer() {
   return (
-    <footer className="snap-end bg-noite pb-24 pt-14 text-papel md:pb-10">
+    <footer className="bg-noite pb-24 pt-14 text-papel md:pb-10">
       <div className="wrap">
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div>

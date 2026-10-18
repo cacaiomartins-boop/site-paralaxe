@@ -13,7 +13,7 @@ export default function Hero() {
     <section
       id="topo"
       ref={parallax}
-      className="relative isolate snap-start overflow-hidden bg-noite text-papel"
+      className="relative isolate overflow-hidden bg-noite text-papel"
     >
       <div ref={pointerRef} className="relative flex min-h-[100svh] flex-col">
         {/* Camada 1: sol ao fundo (move devagar) */}

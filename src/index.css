@@ -6,12 +6,6 @@
   html {
     scroll-behavior: smooth;
   }
-  /* Computador: cada seção ocupa uma tela e a rolagem encaixa nela. */
-  @media (min-width: 1024px) and (min-height: 620px) {
-    html {
-      scroll-snap-type: y mandatory;
-    }
-  }
   body {
     @apply bg-papel font-sans text-tinta antialiased;
     font-feature-settings: "ss01", "kern";
@@ -37,7 +31,7 @@
   }
   /* Uma seção = uma tela. O topo reserva espaço para o cabeçalho fixo. */
   .screen {
-    @apply relative flex min-h-[100svh] snap-start flex-col justify-center pb-8 pt-[5rem];
+    @apply relative flex min-h-[100svh] flex-col justify-center pb-8 pt-[5rem];
   }
   /* Título de seção: acompanha a largura e a altura da tela. */
   .h-sec {
