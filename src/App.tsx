@@ -11,6 +11,7 @@ import Referencias from "./components/Referencias";
 import Combinados from "./components/Combinados";
 import Inscricao from "./components/Inscricao";
 import Faq from "./components/Faq";
+import EmBreve from "./components/EmBreve";
 import Footer from "./components/Footer";
 
 /** Botão fixo no celular: aparece depois do topo e some quando a inscrição está na tela. */
@@ -19,8 +20,8 @@ function StickyCta() {
 
   useEffect(() => {
     let pastHero = false;
-    let onForm = false;
-    const update = () => setShow(pastHero && !onForm);
+    const visible = new Set<Element>();
+    const update = () => setShow(pastHero && visible.size === 0);
 
     const onScroll = () => {
       pastHero = window.scrollY > window.innerHeight * 0.8;
@@ -29,18 +30,19 @@ function StickyCta() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    const target = document.getElementById("inscricao");
-    const io = target
-      ? new IntersectionObserver(([en]) => {
-          onForm = en.isIntersecting;
-          update();
-        })
-      : null;
-    if (target && io) io.observe(target);
+    // Some quando a inscrição ou o aviso final estão na tela, para não cobrir os botões.
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? visible.add(en.target) : visible.delete(en.target)));
+      update();
+    });
+    ["inscricao", "embreve"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      io?.disconnect();
+      io.disconnect();
     };
   }, []);
 
@@ -75,6 +77,7 @@ export default function App() {
         <Combinados />
         <Inscricao />
         <Faq />
+        <EmBreve />
       </main>
       <Footer />
       <StickyCta />

@@ -217,6 +217,14 @@ export const combinados = [
   },
 ];
 
+// Aviso final do site. Para tirar da página, é só remover <EmBreve /> do App.tsx.
+export const embreve = {
+  kicker: "Por vir",
+  title: "Em breve,",
+  highlight: "presencial.",
+  text: "O Paralaxe também vai ganhar encontros presenciais. Ainda não há data nem local definidos: acompanhe o Instagram ou entre em um dos grupos de WhatsApp para saber em primeira mão.",
+};
+
 export const passos = {
   estudos: [
     "Preencha o formulário de inscrição.",
