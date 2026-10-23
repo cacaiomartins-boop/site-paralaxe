@@ -20,6 +20,9 @@ export const links = {
     "https://docs.google.com/forms/d/e/1FAIpQLSdpKEDaPxpACFBGN9qLdtgrIBLLsiz8GvI0SGL1zMioWAhjTQ/viewform",
   grupoEstudos: "https://chat.whatsapp.com/FeNOIxgSVKJ00fuQJpqXa5",
   grupoEscuta: "https://chat.whatsapp.com/BDs5VECjtDGDaCIjBmh1nJ",
+  // Contato direto da Polyana (bolsas e dúvidas).
+  whatsappPolyana:
+    "https://wa.me/5531984976108?text=Oi%2C%20Polyana!%20Tenho%20interesse%20em%20participar%20como%20bolsista%20do%20Psican%C3%A1lise%20em%20Paralaxe.",
   drive:
     "https://drive.google.com/drive/folders/1IRHrd9MvIllvKwC418wjmRgv2hKftv0Y",
   // Opcional: link de um vídeo de apresentação do YouTube (só o código, ex.: "dQw4w9WgXcQ").
@@ -37,7 +40,7 @@ export const spaces = {
     facts: [
       { label: "Quando", value: "Terças-feiras, 20h30" },
       { label: "Onde", value: "On-line, pelo Google Meet" },
-      { label: "Valor", value: "Encontros abertos e gratuitos" },
+      { label: "Valor", value: "Contribuição mensal de R$ 80 · alguns encontros são abertos e gratuitos" },
     ],
     cta: "Quero estudar com o grupo",
     form: links.formEstudos,
@@ -246,6 +249,15 @@ export const faq = [
   {
     q: "Para quem é o Paralaxe?",
     a: "Para quem estuda psicologia, psicanálise ou temas próximos e sente que só tem contato com a teoria. Também para quem já atende e procura interlocução entre pares.",
+  },
+  {
+    q: "Quanto custa o grupo de estudos?",
+    a: "A contribuição mensal do Psicanálise em Paralaxe é de R$ 80. De vez em quando, promovemos encontros abertos e gratuitos, anunciados no Instagram e na agenda.",
+  },
+  {
+    q: "Existe bolsa para quem não pode pagar o valor integral?",
+    a: "Sim. Quem não puder contribuir com o valor integral, mas tem vontade de participar dos encontros, pode entrar como bolsista: combinamos uma contribuição parcial, a definir, e a pessoa ajuda a fazer a ideia circular, compartilhando o conteúdo do Instagram @paralaxeslab nas redes sociais. Para pedir a bolsa, é só falar com a Polyana pelo WhatsApp: (31) 98497-6108.",
+    link: { label: "Pedir bolsa pelo WhatsApp", href: links.whatsappPolyana },
   },
   {
     q: "Qual a diferença entre ouvinte e analista?",

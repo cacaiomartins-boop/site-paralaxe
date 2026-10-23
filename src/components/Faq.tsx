@@ -18,6 +18,16 @@ export default function Faq() {
                 <span className="plus shrink-0 text-2xl font-light text-ferrugem transition-transform">+</span>
               </summary>
               <p className="max-w-2xl pb-4 leading-relaxed text-tinta/75">{f.a}</p>
+              {"link" in f && f.link && (
+                <a
+                  href={f.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-ink mb-5 !py-3"
+                >
+                  {f.link.label}
+                </a>
+              )}
             </details>
           ))}
         </div>

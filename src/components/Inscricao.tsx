@@ -59,7 +59,7 @@ export default function Inscricao() {
             <p className="mt-5 rounded-2xl bg-tinta/10 p-3.5 text-sm leading-relaxed">
               {k === "escuta"
                 ? "Valores: ouvinte R$ 50, analista R$ 90. Sem reembolso em caso de desistência."
-                : "Os encontros do grupo de estudos são abertos e gratuitos."}{" "}
+                : "Contribuição mensal de R$ 80. De vez em quando, promovemos encontros abertos e gratuitos. Há também vagas de bolsista: veja em Dúvidas."}{" "}
               O formulário abre em uma nova aba e pode pedir que você entre com a sua conta Google.
             </p>
 
