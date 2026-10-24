@@ -94,8 +94,9 @@ export default function Hero() {
           </h1>
           <p className="kicker mt-4 text-papel/80 sm:text-sol">Estudos · Supervisão · Psicanálise</p>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-papel/80 sm:text-lg">
-            Estudos teóricos e supervisão clínica em grupo para quem estuda
-            psicanálise e quer atravessar o texto até a clínica.
+            Estudos teóricos e supervisão em grupo para quem estuda psicanálise
+            e quer construir um percurso de formação: do texto teórico até a
+            prática clínica.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">

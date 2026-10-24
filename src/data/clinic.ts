@@ -63,6 +63,18 @@ export const spaces = {
   },
 };
 
+// Propostas extras, mostradas abaixo dos dois espaços. Datas e valores: combinar com a Polyana.
+export const propostas = [
+  {
+    name: "Mini cursos",
+    text: "Percursos curtos e focados em um tema ou autor da psicanálise.",
+  },
+  {
+    name: "Grupo de leitura",
+    text: "Leitura compartilhada e em ritmo próprio de textos da psicanálise.",
+  },
+];
+
 export const modalidades = [
   {
     name: "Ouvinte",

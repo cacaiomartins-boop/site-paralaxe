@@ -1,4 +1,4 @@
-import { spaces } from "../data/clinic";
+import { links, propostas, spaces } from "../data/clinic";
 
 type Space = typeof spaces.estudos;
 
@@ -62,6 +62,26 @@ export default function Espacos() {
         <div className="mt-6 grid gap-5 lg:grid-cols-2">
           <Card s={spaces.estudos} tone="sol" delay="0ms" />
           <Card s={spaces.escuta} tone="ceu" delay="140ms" />
+        </div>
+
+        <div className="reveal mt-8">
+          <p className="kicker mb-3 text-ferrugem">Também no Paralaxe</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {propostas.map((p) => (
+              <article key={p.name} className="rounded-[1.5rem] border border-tinta/15 p-5">
+                <h3 className="text-xl font-medium">{p.name}</h3>
+                <p className="mt-1 text-[0.95rem] leading-relaxed text-tinta/75">{p.text}</p>
+                <a
+                  href={links.whatsappPolyana}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block font-mono text-[0.75rem] uppercase tracking-[0.14em] text-ferrugem underline-offset-4 hover:underline"
+                >
+                  Saber mais pelo WhatsApp
+                </a>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
