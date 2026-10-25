@@ -51,7 +51,7 @@ function StickyCta() {
       href="#inscricao"
       aria-hidden={!show}
       tabIndex={show ? 0 : -1}
-      className={`btn btn-sol fixed bottom-4 left-1/2 z-40 -translate-x-1/2 !px-8 !py-3 shadow-xl transition duration-300 md:hidden ${
+      className={`btn btn-sol fixed whitespace-nowrap bottom-4 left-1/2 z-40 -translate-x-1/2 !px-8 !py-3 shadow-xl transition duration-300 md:hidden ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"
       }`}
     >

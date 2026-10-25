@@ -36,11 +36,10 @@ export const spaces = {
     kicker: "Espaço 01",
     name: "Psicanálise em Paralaxe",
     subtitle: "Grupo de estudos teóricos",
-    text: "Lemos autores da psicanálise e fazemos a teoria conversar com a clínica, a ciência e o nosso tempo. Cada encontro abre com uma exposição e deixa lacunas em aberto, para render pergunta.",
+    text: "A partir da leitura de autores da psicanálise, construímos um debate em torno da clínica e das questões que atravessam o nosso contexto. Cada encontro parte de uma breve exposição e deixa lacunas em aberto, como forma de questionar a teoria, as nossas perspectivas sobre a psicanálise e estimular a construção de um saber.",
     facts: [
-      { label: "Quando", value: "Terças-feiras, 20h30" },
-      { label: "Onde", value: "On-line, pelo Google Meet" },
-      { label: "Valor", value: "Contribuição mensal de R$ 80 · alguns encontros são abertos e gratuitos" },
+      { label: "Quando", value: "Terças, 20h30 · on-line, pelo Google Meet" },
+      { label: "Valor", value: "R$ 80 por mês · alguns encontros gratuitos" },
     ],
     cta: "Quero estudar com o grupo",
     form: links.formEstudos,
@@ -53,8 +52,7 @@ export const spaces = {
     subtitle: "Supervisão psicanalítica em grupo",
     text: "Um espaço de supervisão e interlocução voltado à escuta de casos clínicos, à elaboração de impasses e à direção do tratamento. A cada encontro, um caso é trazido ao grupo e pensado entre pares.",
     facts: [
-      { label: "Quando", value: "Quartas-feiras, 20h às 21h30" },
-      { label: "Onde", value: "On-line, pelo Google Meet" },
+      { label: "Quando", value: "Quartas, 20h às 21h30 · on-line, pelo Google Meet" },
       { label: "Valor", value: "Ouvinte R$ 50 · Analista R$ 90" },
     ],
     cta: "Quero entrar na supervisão",
@@ -67,11 +65,11 @@ export const spaces = {
 export const propostas = [
   {
     name: "Mini cursos",
-    text: "Percursos curtos e focados em um tema ou autor da psicanálise.",
+    text: "Percursos curtos, de 5 encontros, sobre um tema ou autor da psicanálise.",
   },
   {
     name: "Grupo de leitura",
-    text: "Leitura compartilhada e em ritmo próprio de textos da psicanálise.",
+    text: "Leitura compartilhada de textos que fazem interseção com a psicanálise, com a política ou com a filosofia.",
   },
 ];
 

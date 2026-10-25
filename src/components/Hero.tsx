@@ -64,20 +64,20 @@ export default function Hero() {
         <div className="h-16 shrink-0" />
 
         {/* Faixa própria da palavra: ela ocupa só o espaço livre acima do título */}
-        <div className="pointer-events-none relative z-0 flex min-h-[7.5rem] flex-1 select-none items-center justify-center">
+        <div className="pointer-events-none relative z-0 flex min-h-[5.5rem] flex-1 select-none items-center justify-center">
           <div
             data-speed="-0.2"
             className="relative pb-5 will-change-transform"
             aria-hidden="true"
           >
             <span
-              className="outline-word-sol absolute inset-0 block whitespace-nowrap font-display text-[min(25vw,26vh)] font-light italic leading-[0.95] tracking-[-0.04em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
+              className="glitch-word-sol absolute inset-0 block whitespace-nowrap font-glitch text-[min(19vw,24vh)] leading-[0.95] tracking-[-0.02em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
               style={{ transform: `translate(${dx}px, ${dy}px)` }}
             >
               paralaxe
             </span>
             <span
-              className="outline-word relative block whitespace-nowrap font-display text-[min(25vw,26vh)] font-light italic leading-[0.95] tracking-[-0.04em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
+              className="glitch-word relative block whitespace-nowrap font-glitch text-[min(19vw,24vh)] leading-[0.95] tracking-[-0.02em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
               style={{ transform: `translate(${-dx}px, ${-dy}px)` }}
             >
               paralaxe
@@ -87,7 +87,7 @@ export default function Hero() {
 
         {/* Conteúdo */}
         <div className="wrap relative z-10 pb-8 sm:pb-12">
-          <h1 className="max-w-4xl text-[clamp(2.7rem,min(7.4vw,10.5vh),6.6rem)] font-light leading-[0.94] tracking-[-0.03em]">
+          <h1 className="max-w-4xl text-[clamp(2.7rem,min(7.4vw,9.5vh),6.6rem)] font-light leading-[0.94] tracking-[-0.03em]">
             Da teoria
             <br />
             <span className="italic text-sol">à escuta.</span>
@@ -108,7 +108,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <dl className="mt-8 hidden max-w-3xl grid-cols-3 gap-5 border-t border-papel/15 pt-5 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-papel/60 sm:grid [@media(max-height:740px)]:hidden">
+          <dl className="mt-8 hidden max-w-3xl grid-cols-3 gap-5 border-t border-papel/15 pt-5 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-papel/60 sm:grid [@media(max-height:820px)]:hidden">
             <div>
               <dt className="text-papel/40">Formato</dt>
               <dd className="mt-1 text-papel">On-line, Google Meet</dd>

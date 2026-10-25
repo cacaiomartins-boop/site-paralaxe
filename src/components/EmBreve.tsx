@@ -4,7 +4,7 @@ export default function EmBreve() {
   return (
     <section
       id="embreve"
-      className="relative overflow-hidden border-b border-papel/10 bg-noite py-24 text-papel sm:py-32"
+      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden border-b border-papel/10 bg-noite pb-12 pt-28 text-papel"
     >
       {/* Sol e anéis, em eco com o topo do site */}
       <div
@@ -30,7 +30,7 @@ export default function EmBreve() {
 
       <div className="wrap relative">
         <p className="kicker reveal mb-5 text-sol">{embreve.kicker}</p>
-        <h2 className="reveal max-w-3xl text-[clamp(3rem,9vw,7rem)] font-light leading-[0.95] tracking-[-0.03em]">
+        <h2 className="reveal max-w-3xl text-[clamp(3rem,min(9vw,16vh),7rem)] font-light leading-[0.95] tracking-[-0.03em]">
           {embreve.title}
           <br />
           <span className="italic text-sol">{embreve.highlight}</span>

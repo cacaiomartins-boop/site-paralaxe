@@ -6,6 +6,12 @@
   html {
     scroll-behavior: smooth;
   }
+  /* Telas de notebook (pouca altura): tudo encolhe junto para a seção caber na tela. */
+  @media (min-width: 1024px) {
+    html {
+      font-size: clamp(13px, calc(2px + 2vh), 16px);
+    }
+  }
   body {
     @apply bg-papel font-sans text-tinta antialiased;
     font-feature-settings: "ss01", "kern";
@@ -31,7 +37,7 @@
   }
   /* Uma seção = uma tela. O topo reserva espaço para o cabeçalho fixo. */
   .screen {
-    @apply relative flex min-h-[100svh] flex-col justify-center pb-8 pt-[5rem];
+    @apply relative flex min-h-[100svh] flex-col justify-center pb-6 pt-[4.5rem];
   }
   /* Título de seção: acompanha a largura e a altura da tela. */
   .h-sec {
@@ -75,6 +81,14 @@
 .outline-word-sol {
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(240, 180, 41, 0.55);
+}
+
+/* Versão preenchida (fonte glitch): o contorno fino embaralha as fatias da letra */
+.glitch-word {
+  color: rgba(244, 236, 224, 0.95);
+}
+.glitch-word-sol {
+  color: rgba(169, 198, 234, 0.6);
 }
 
 /* Revelar ao rolar */

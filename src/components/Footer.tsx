@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 text-sol">
               <Logo className="h-10 w-10" />
-              <span className="font-mono text-sm uppercase tracking-[0.42em] text-papel">Paralaxe</span>
+              <span className="font-glitch text-lg tracking-[0.12em] text-papel">Paralaxe</span>
             </div>
             <p className="mt-5 max-w-sm font-display text-2xl italic leading-snug text-papel/80">
               {site.tagline} Estudos e supervisão em psicanálise, on-line.

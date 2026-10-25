@@ -3,15 +3,25 @@ import { comoFunciona, modalidades, spaces } from "../data/clinic";
 function Col({
   title,
   dot,
+  logo,
   steps,
 }: {
   title: string;
   dot: string;
+  logo: string;
   steps: { t: string; d: string }[];
 }) {
   return (
     <div className="reveal">
       <div className="flex items-center gap-3 border-b border-tinta/15 pb-3">
+        <img
+          src={logo}
+          alt=""
+          width={44}
+          height={44}
+          loading="lazy"
+          className="h-11 w-11 shrink-0 object-contain mix-blend-multiply"
+        />
         <span className={`h-3.5 w-3.5 rounded-full ${dot}`} />
         <h3 className="font-display text-2xl font-medium">{title}</h3>
       </div>
@@ -42,8 +52,8 @@ export default function ComoFunciona() {
         </h2>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-2 lg:gap-14">
-          <Col title={spaces.estudos.name} dot="bg-sol" steps={comoFunciona.estudos} />
-          <Col title={spaces.escuta.name} dot="bg-ceu" steps={comoFunciona.escuta} />
+          <Col title={spaces.estudos.name} dot="bg-sol" logo="/img/logo-estudos.png" steps={comoFunciona.estudos} />
+          <Col title={spaces.escuta.name} dot="bg-ceu" logo="/img/logo-escuta.png" steps={comoFunciona.escuta} />
         </div>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-[auto_1fr_1fr] sm:items-stretch">

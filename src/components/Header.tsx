@@ -32,7 +32,7 @@ export default function Header() {
       <div className="wrap flex h-16 items-center justify-between text-papel">
         <a href="#topo" className="flex items-center gap-2.5" aria-label="Paralaxe, início">
           <Logo className="h-8 w-8 text-sol" />
-          <span className="font-mono text-[0.8rem] uppercase tracking-[0.42em]">Paralaxe</span>
+          <span className="font-glitch text-[1.05rem] tracking-[0.12em]">Paralaxe</span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Principal">

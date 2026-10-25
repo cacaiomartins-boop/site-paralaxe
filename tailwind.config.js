@@ -14,6 +14,7 @@ export default {
         ceu: "#A9C6EA",
       },
       fontFamily: {
+        glitch: ['"Rubik Glitch"', "system-ui", "sans-serif"],
         display: ['"Fraunces"', "Georgia", "serif"],
         sans: ['"Instrument Sans"', "system-ui", "sans-serif"],
         mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"],

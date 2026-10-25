@@ -76,21 +76,26 @@ export default function Manifesto() {
             className="h-sec reveal mt-6"
             style={{ "--d": "160ms" } as React.CSSProperties}
           >
-            Mudar de lugar muda o que <span className="italic text-ferrugem">se escuta.</span>
+            Mudar de lugar muda o que <span className="italic text-ferrugem">percebemos.</span>
           </h2>
           <div
             className="reveal mt-6 max-w-xl space-y-4 text-[1.02rem] leading-relaxed text-tinta/80"
             style={{ "--d": "240ms" } as React.CSSProperties}
           >
             <p>
-              Quem estuda psicanálise conhece o peso da teoria. Mas a clínica não se aprende só
-              lendo: ela se aprende escutando, errando junto, perguntando ao colega, voltando ao
-              texto com outra pergunta.
+              Quem estuda psicanálise conhece o poder subversivo de seus conceitos. Mas a clínica
+              não se constrói apenas com a dedicação aos estudos.
             </p>
             <p>
-              O Paralaxe nasceu desse vai e vem: de um lado, o grupo de estudos; do outro, a
-              supervisão em grupo, onde casos clínicos são pensados entre pares. Cada encontro é
-              um convite para trocar de posição e ver a mesma coisa de outro ângulo.
+              A prática do psicanalista se constrói na escuta entre pares, na análise dos impasses
+              que emergem em cada contexto, no questionamento e na atualização da teoria, na escuta
+              crítica das opiniões dos colegas e no retorno constante aos textos.
+            </p>
+            <p>
+              O Paralaxe nasce desse movimento. De um lado, os estudos teóricos; de outro, a
+              supervisão em grupo, onde os casos clínicos são pensados entre pares. Cada encontro é
+              um convite à paralaxe: mudar de posição para observar novamente, por outro ângulo,
+              aquilo que parecia já conhecido.
             </p>
           </div>
         </div>
