@@ -71,13 +71,13 @@ export default function Hero() {
             aria-hidden="true"
           >
             <span
-              className="glitch-word-sol absolute inset-0 block whitespace-nowrap font-glitch text-[min(19vw,24vh)] leading-[0.95] tracking-[-0.02em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
+              className="outline-word-sol absolute inset-0 block whitespace-nowrap font-display text-[min(25vw,26vh)] font-light italic leading-[0.95] tracking-[-0.04em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
               style={{ transform: `translate(${dx}px, ${dy}px)` }}
             >
               paralaxe
             </span>
             <span
-              className="glitch-word relative block whitespace-nowrap font-glitch text-[min(19vw,24vh)] leading-[0.95] tracking-[-0.02em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
+              className="outline-word relative block whitespace-nowrap font-display text-[min(25vw,26vh)] font-light italic leading-[0.95] tracking-[-0.04em] transition-transform duration-300 ease-out lg:text-[min(17vw,28vh)]"
               style={{ transform: `translate(${-dx}px, ${-dy}px)` }}
             >
               paralaxe
