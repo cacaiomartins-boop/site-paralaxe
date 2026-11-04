@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { spaces, passos } from "../data/clinic";
+import { spaces, passos, passosPagamento, botoesDePagamento, avisoEmail } from "../data/clinic";
 
 type Key = "estudos" | "escuta";
 
@@ -7,6 +7,8 @@ export default function Inscricao() {
   const [k, setK] = useState<Key>("escuta");
   const s = spaces[k];
   const tone = k === "estudos" ? "bg-sol" : "bg-ceu";
+  const pagar = botoesDePagamento(k);
+  const lista = pagar.length > 0 ? passosPagamento[k] : passos[k];
 
   return (
     <section id="inscricao" className="screen bg-noite text-papel">
@@ -46,7 +48,7 @@ export default function Inscricao() {
             <h3 className="mt-1 text-2xl font-medium sm:text-3xl">Como se inscrever</h3>
 
             <ol className="mt-5 space-y-3.5">
-              {passos[k].map((p, i) => (
+              {lista.map((p, i) => (
                 <li key={p} className="flex gap-4">
                   <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-tinta font-mono text-sm text-papel">
                     {i + 1}
@@ -56,17 +58,38 @@ export default function Inscricao() {
               ))}
             </ol>
 
-            <p className="mt-5 rounded-2xl bg-tinta/10 p-3.5 text-sm leading-relaxed">
+            {pagar.length > 0 && (
+              <p className="mt-5 flex items-start gap-3 rounded-2xl bg-tinta p-3.5 text-sm font-semibold leading-snug text-papel">
+                <span aria-hidden="true" className="text-lg leading-none text-sol">
+                  ✉
+                </span>
+                <span>
+                  Atenção ao e-mail! {avisoEmail}
+                </span>
+              </p>
+            )}
+
+            <p className="mt-3 rounded-2xl bg-tinta/10 p-3.5 text-sm leading-relaxed">
               {k === "escuta"
                 ? "Valores: ouvinte R$ 50, analista R$ 90. Sem reembolso em caso de desistência."
                 : "Contribuição mensal de R$ 80. De vez em quando, promovemos encontros abertos e gratuitos. Há também vagas de bolsista: veja em Dúvidas."}{" "}
-              O formulário abre em uma nova aba e pode pedir que você entre com a sua conta Google.
+              {pagar.length > 0
+                ? ""
+                : "O formulário abre em uma nova aba e pode pedir que você entre com a sua conta Google."}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-3">
-              <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-3">
-                Abrir formulário
-              </a>
+              {pagar.length > 0 ? (
+                pagar.map((b) => (
+                  <a key={b.key} href={b.href} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-3">
+                    {b.label}
+                  </a>
+                ))
+              ) : (
+                <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-3">
+                  Abrir formulário
+                </a>
+              )}
               <a
                 href={s.group}
                 target="_blank"

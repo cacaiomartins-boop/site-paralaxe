@@ -1,13 +1,14 @@
-import { links, propostas, spaces } from "../data/clinic";
+import { avisoEmail, botoesDePagamento, links, pagamentos, propostas, spaces } from "../data/clinic";
 
 type Space = typeof spaces.estudos;
 
 function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string }) {
   const bg = tone === "sol" ? "bg-sol" : "bg-ceu";
+  const pagar = botoesDePagamento(s.id as "estudos" | "escuta");
   return (
     <article
       id={s.id}
-      className={`reveal flex flex-col rounded-[2rem] ${bg} p-6 text-tinta lg:p-4`}
+      className={`reveal flex flex-col rounded-[2rem] ${bg} p-6 text-tinta lg:p-3.5`}
       style={{ "--d": delay } as React.CSSProperties}
     >
       <p className="kicker text-tinta/60">{s.kicker}</p>
@@ -26,10 +27,18 @@ function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string
         ))}
       </dl>
 
-      <div className="mt-auto flex flex-wrap gap-3 pt-5 lg:pt-3">
-        <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-2.5">
-          {s.cta}
-        </a>
+      <div className="mt-auto flex flex-wrap gap-3 pt-5 lg:pt-2">
+        {pagar.length > 0 ? (
+          pagar.map((b) => (
+            <a key={b.key} href={b.href} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-2.5">
+              {b.label}
+            </a>
+          ))
+        ) : (
+          <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-2.5">
+            {s.cta}
+          </a>
+        )}
         <a
           href={s.group}
           target="_blank"
@@ -39,6 +48,9 @@ function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string
           Grupo no WhatsApp
         </a>
       </div>
+      {pagar.length > 0 && (
+        <p className="mt-1.5 text-[0.78rem] font-semibold leading-tight text-tinta/80">✉ {avisoEmail}</p>
+      )}
     </article>
   );
 }
@@ -64,25 +76,25 @@ export default function Espacos() {
           <Card s={spaces.escuta} tone="ceu" delay="140ms" />
         </div>
 
-        <div className="reveal mt-6 lg:mt-3">
+        <div className="reveal mt-6 lg:mt-2">
           <p className="kicker mb-2 text-ferrugem">Também no Paralaxe</p>
           <div className="grid gap-3 sm:grid-cols-2">
             {propostas.map((p) => (
               <article
                 key={p.name}
-                className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-[1.2rem] border border-tinta/15 px-5 py-3"
+                className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-[1.2rem] border border-tinta/15 px-5 py-3 lg:py-2"
               >
                 <div>
                   <h3 className="text-lg font-medium leading-tight">{p.name}</h3>
                   <p className="text-[0.88rem] leading-snug text-tinta/75">{p.text}</p>
                 </div>
                 <a
-                  href={links.whatsappPolyana}
+                  href={pagamentos[p.pagamento].link || links.whatsappPolyana}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="shrink-0 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ferrugem underline-offset-4 hover:underline"
                 >
-                  Saber mais
+                  {pagamentos[p.pagamento].link ? pagamentos[p.pagamento].label : "Saber mais"}
                 </a>
               </article>
             ))}

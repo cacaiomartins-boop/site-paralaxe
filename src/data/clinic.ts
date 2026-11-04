@@ -61,13 +61,45 @@ export const spaces = {
   },
 };
 
+// Links de pagamento do Mercado Pago. Cole o link entre as aspas: enquanto estiver vazio,
+// o botão não aparece e o site segue com o formulário de inscrição de antes.
+// O TÍTULO de cada link no Mercado Pago precisa seguir o padrão de api/_produtos.js
+// (ex.: "Paralaxe Estudos Mensalidade"), é assim que o sistema sabe o que a pessoa comprou.
+export const pagamentos = {
+  estudos: { label: "Assinar · R$ 80/mês", link: "" },
+  ouvinte: { label: "Ouvinte · R$ 50", link: "" },
+  analista: { label: "Analista · R$ 90", link: "" },
+  minicurso: { label: "Inscrever-se", link: "" },
+  leitura: { label: "Inscrever-se", link: "" },
+};
+
+export type PagamentoKey = keyof typeof pagamentos;
+
+/** Vira true assim que o primeiro link de pagamento for colado. */
+export const pagamentoAtivo = Object.values(pagamentos).some((p) => p.link);
+
+// Quais botões de pagamento cada espaço mostra.
+export const pagamentosDoEspaco: Record<"estudos" | "escuta", PagamentoKey[]> = {
+  estudos: ["estudos"],
+  escuta: ["ouvinte", "analista"],
+};
+
+/** Botões de pagamento que já têm link colado. */
+export function botoesDePagamento(espaco: "estudos" | "escuta") {
+  return pagamentosDoEspaco[espaco]
+    .filter((k) => pagamentos[k].link)
+    .map((k) => ({ key: k, label: pagamentos[k].label, href: pagamentos[k].link }));
+}
+
 // Propostas extras, mostradas abaixo dos dois espaços. Datas e valores: combinar com a Polyana.
-export const propostas = [
+export const propostas: { name: string; text: string; pagamento: PagamentoKey }[] = [
   {
+    pagamento: "minicurso",
     name: "Mini cursos",
     text: "Percursos curtos, de 5 encontros, sobre um tema ou autor da psicanálise.",
   },
   {
+    pagamento: "leitura",
     name: "Grupo de leitura",
     text: "Leitura compartilhada de textos que fazem interseção com a psicanálise, com a política ou com a filosofia.",
   },
@@ -251,6 +283,23 @@ export const passos = {
   ],
 };
 
+// Passos da inscrição quando o pagamento pelo site está ativo.
+export const passosPagamento = {
+  estudos: [
+    "Clique em Assinar e pague pelo Mercado Pago. Informe um e-mail que você confere: é nele que chega o convite.",
+    "Você recebe nesse e-mail o comprovante, o convite do grupo de WhatsApp e o link do encontro.",
+    "Receba o material de leitura na pasta de referências.",
+  ],
+  escuta: [
+    "Escolha a modalidade, ouvinte ou analista, e pague pelo Mercado Pago. Informe um e-mail que você confere: é nele que chega o convite.",
+    "Você recebe nesse e-mail o comprovante, o convite do grupo de WhatsApp e o link do encontro.",
+    "Entre no grupo e participe do próximo encontro.",
+  ],
+};
+
+// Aviso curto sobre o e-mail do pagamento (mostrado perto dos botões de pagar).
+export const avisoEmail = "Use um e-mail que você confere: o convite chega nele.";
+
 export const faq = [
   {
     q: "Preciso ter experiência clínica?",
@@ -281,6 +330,14 @@ export const faq = [
     q: "Os encontros ficam gravados?",
     a: "Não. As gravações e o compartilhamento dos encontros não são permitidos.",
   },
+  ...(pagamentoAtivo
+    ? [
+        {
+          q: "Para qual e-mail vai o convite?",
+          a: "Para o e-mail que você informar no pagamento pelo Mercado Pago. Por isso, use um e-mail que você confere sempre. Se o e-mail não chegar em alguns minutos, olhe o spam e a aba Promoções; se ainda assim não aparecer, chame a Polyana pelo Instagram @paralaxeslab.",
+        },
+      ]
+    : []),
   {
     q: "Posso desistir depois de me inscrever?",
     a: "Pode, mas não há reembolso do valor pago em caso de desistência.",

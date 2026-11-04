@@ -13,7 +13,7 @@ export default function Faq() {
         <div className="divide-y divide-tinta/15 border-y border-tinta/15">
           {faq.map((f) => (
             <details key={f.q} className="reveal group py-1">
-              <summary className="flex cursor-pointer items-center justify-between gap-6 py-3.5 font-display text-lg font-medium leading-snug sm:text-xl">
+              <summary className="flex cursor-pointer items-center justify-between gap-6 py-3.5 font-display text-lg lg:py-2.5 font-medium leading-snug sm:text-xl">
                 {f.q}
                 <span className="plus shrink-0 text-2xl font-light text-ferrugem transition-transform">+</span>
               </summary>
