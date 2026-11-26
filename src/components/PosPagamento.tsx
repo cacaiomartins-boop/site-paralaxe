@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { modoDireto, spaces } from "../data/clinic";
-import { EVENTO_PAGANDO, type EspacoPago } from "../posPagamentoBus";
+import { EVENTO_PAGANDO, limparPagamento, pagamentoPendente, type EspacoPago } from "../posPagamentoBus";
 
 /**
  * Modo "direto": o botão de pagar abre o Mercado Pago em outra aba e esta janela fica esperando.
@@ -10,6 +10,21 @@ export default function PosPagamento() {
   const [espaco, setEspaco] = useState<EspacoPago | null>(null);
   const [voltou, setVoltou] = useState(false);
   const saiu = useRef(false);
+
+  function fechar() {
+    limparPagamento();
+    setEspaco(null);
+  }
+
+  // A página abriu de novo (voltou do pagamento na mesma janela, ou recarregou): mostra o botão do grupo.
+  useEffect(() => {
+    if (!modoDireto) return;
+    const pendente = pagamentoPendente();
+    if (pendente) {
+      setEspaco(pendente);
+      setVoltou(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!modoDireto) return;
@@ -36,7 +51,9 @@ export default function PosPagamento() {
     document.addEventListener("visibilitychange", retorno);
     window.addEventListener("blur", perdeu);
     window.addEventListener("focus", retorno);
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && setEspaco(null);
+    const esc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") fechar();
+    };
     window.addEventListener("keydown", esc);
     return () => {
       document.removeEventListener("visibilitychange", saida);
@@ -70,10 +87,10 @@ export default function PosPagamento() {
             <p className="mt-3 rounded-2xl bg-tinta p-3.5 text-sm font-semibold leading-snug text-papel">
               O acesso só será liberado após a confirmação do pagamento. A Polyana confere e aprova a sua entrada no grupo.
             </p>
-            <a href={grupo} target="_blank" rel="noopener noreferrer" className="btn btn-ink mt-5 w-full">
+            <a href={grupo} target="_blank" rel="noopener noreferrer" onClick={limparPagamento} className="btn btn-ink mt-5 w-full">
               Entrar no grupo de WhatsApp
             </a>
-            <button type="button" onClick={() => setEspaco(null)} className="mt-3 w-full text-sm font-semibold text-tinta/70 underline underline-offset-4">
+            <button type="button" onClick={fechar} className="mt-3 w-full text-sm font-semibold text-tinta/70 underline underline-offset-4">
               Ainda não paguei, voltar ao site
             </button>
           </>
@@ -93,7 +110,7 @@ export default function PosPagamento() {
             <button type="button" onClick={() => setVoltou(true)} className="mt-5 text-sm font-semibold text-ferrugem underline underline-offset-4">
               Já terminei
             </button>
-            <button type="button" onClick={() => setEspaco(null)} className="mt-3 block text-sm font-semibold text-tinta/60 underline underline-offset-4">
+            <button type="button" onClick={fechar} className="mt-3 block text-sm font-semibold text-tinta/60 underline underline-offset-4">
               Cancelar
             </button>
           </>

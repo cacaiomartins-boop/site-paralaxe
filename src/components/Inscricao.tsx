@@ -16,7 +16,7 @@ import {
   servicoDoEspaco,
 } from "../data/clinic";
 import { abrirInscricao } from "../inscricaoBus";
-import { avisarPagamento } from "../posPagamentoBus";
+import BotaoPagar from "./BotaoPagar";
 
 type Key = "estudos" | "escuta";
 
@@ -121,16 +121,9 @@ export default function Inscricao() {
                 ))
               ) : direto ? (
                 pagar.map((b) => (
-                  <a
-                    key={b.key}
-                    href={b.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => avisarPagamento(k)}
-                    className="btn btn-ink !py-3"
-                  >
+                  <BotaoPagar key={b.key} href={b.href} espaco={k} className="btn btn-ink !py-3">
                     {b.label}
-                  </a>
+                  </BotaoPagar>
                 ))
               ) : (
                 <>

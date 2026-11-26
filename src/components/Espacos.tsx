@@ -1,4 +1,4 @@
-import { avisarPagamento } from "../posPagamentoBus";
+import BotaoPagar from "./BotaoPagar";
 import {
   automacaoAtiva,
   avisoEmail,
@@ -53,16 +53,9 @@ function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string
         ) : pagar.length > 0 ? (
           <>
             {pagar.map((b) => (
-              <a
-                key={b.key}
-                href={b.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={modoDireto ? () => avisarPagamento(s.id as "estudos" | "escuta") : undefined}
-                className="btn btn-ink !py-2.5"
-              >
+              <BotaoPagar key={b.key} href={b.href} espaco={s.id as "estudos" | "escuta"} className="btn btn-ink !py-2.5">
                 {b.label}
-              </a>
+              </BotaoPagar>
             ))}
           </>
         ) : (
