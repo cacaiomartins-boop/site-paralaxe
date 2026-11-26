@@ -1,5 +1,5 @@
 import Logo from "./Logo";
-import { links, pagamentoAtivo, site } from "../data/clinic";
+import { links, termosProntos, site } from "../data/clinic";
 
 export default function Footer() {
   return (
@@ -28,7 +28,7 @@ export default function Footer() {
             <a href="#inscricao" className="hover:text-sol">
               Inscrição
             </a>
-            {pagamentoAtivo && (
+            {termosProntos && (
               <a href="/privacidade.html" className="hover:text-sol">
                 Termos e privacidade
               </a>

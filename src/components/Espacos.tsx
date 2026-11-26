@@ -1,10 +1,10 @@
-import { avisoEmail, botoesDePagamento, links, pagamentos, propostas, spaces } from "../data/clinic";
+import { automacaoAtiva, avisoEmail, botoesDePagamento, links, pagamentos, propostas, spaces } from "../data/clinic";
 
 type Space = typeof spaces.estudos;
 
 function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string }) {
   const bg = tone === "sol" ? "bg-sol" : "bg-ceu";
-  const pagar = botoesDePagamento(s.id as "estudos" | "escuta");
+  const pagar = automacaoAtiva ? botoesDePagamento(s.id as "estudos" | "escuta") : [];
   return (
     <article
       id={s.id}
@@ -48,7 +48,7 @@ function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string
           Grupo no WhatsApp
         </a>
       </div>
-      {pagar.length > 0 && (
+      {pagar.length > 0 && automacaoAtiva && (
         <p className="mt-1.5 text-[0.78rem] font-semibold leading-tight text-tinta/80">✉ {avisoEmail}</p>
       )}
     </article>

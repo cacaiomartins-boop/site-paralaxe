@@ -66,14 +66,22 @@ export const spaces = {
 // O TÍTULO de cada link no Mercado Pago precisa seguir o padrão de api/_produtos.js
 // (ex.: "Paralaxe Estudos Mensalidade"), é assim que o sistema sabe o que a pessoa comprou.
 export const pagamentos = {
-  estudos: { label: "Assinar · R$ 80/mês", link: "" },
-  ouvinte: { label: "Ouvinte · R$ 50", link: "" },
-  analista: { label: "Analista · R$ 90", link: "" },
+  estudos: { label: "Mensalidade · R$ 80", link: "https://mpago.la/1NyS79u" },
+  ouvinte: { label: "Ouvinte · R$ 50", link: "https://mpago.la/31x3Htx" },
+  analista: { label: "Analista · R$ 90", link: "https://mpago.la/1qM2SkF" },
   minicurso: { label: "Inscrever-se", link: "" },
   leitura: { label: "Inscrever-se", link: "" },
 };
 
 export type PagamentoKey = keyof typeof pagamentos;
+
+// Chave geral do e-mail automático (api/mp-webhook.js).
+// false = a Polyana ainda manda o convite na mão: o site mantém o formulário e não promete e-mail.
+// Troque para true só depois de configurar Resend, Upstash e as variáveis na Vercel (veja PAGAMENTOS-LEIA-ME.md).
+export const automacaoAtiva = false;
+
+// Mostra o link "Termos e privacidade" no rodapé. Só vira true depois que a Polyana revisar public/privacidade.html.
+export const termosProntos = false;
 
 /** Vira true assim que o primeiro link de pagamento for colado. */
 export const pagamentoAtivo = Object.values(pagamentos).some((p) => p.link);
@@ -283,10 +291,24 @@ export const passos = {
   ],
 };
 
-// Passos da inscrição quando o pagamento pelo site está ativo.
+// Passos da inscrição com pagamento pelo site, enquanto o e-mail automático NÃO está ativo.
+export const passosPagamentoManual = {
+  estudos: [
+    "Preencha o formulário de inscrição, com o e-mail que você confere.",
+    "No fim do formulário, pague a mensalidade pelo Mercado Pago (Pix, cartão ou boleto).",
+    "Entre no grupo de WhatsApp do Psicanálise em Paralaxe e receba o link do encontro.",
+  ],
+  escuta: [
+    "Preencha o formulário de inscrição e escolha a modalidade, ouvinte ou analista.",
+    "No fim do formulário, pague a sua modalidade pelo Mercado Pago (Pix, cartão ou boleto).",
+    "Entre no grupo de WhatsApp da Escuta Clínica e receba o link do encontro.",
+  ],
+};
+
+// Passos da inscrição quando o pagamento pelo site e o e-mail automático estão ativos.
 export const passosPagamento = {
   estudos: [
-    "Clique em Assinar e pague pelo Mercado Pago. Informe um e-mail que você confere: é nele que chega o convite.",
+    "Clique em Mensalidade e pague pelo Mercado Pago. Informe um e-mail que você confere: é nele que chega o convite.",
     "Você recebe nesse e-mail o comprovante, o convite do grupo de WhatsApp e o link do encontro.",
     "Receba o material de leitura na pasta de referências.",
   ],
@@ -330,7 +352,7 @@ export const faq = [
     q: "Os encontros ficam gravados?",
     a: "Não. As gravações e o compartilhamento dos encontros não são permitidos.",
   },
-  ...(pagamentoAtivo
+  ...(pagamentoAtivo && automacaoAtiva
     ? [
         {
           q: "Para qual e-mail vai o convite?",

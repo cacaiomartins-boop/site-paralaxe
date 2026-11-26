@@ -16,6 +16,10 @@ const pagamentos = {
   1003: { id: 1003, status: "approved", transaction_amount: 40, description: "Paralaxe Estudos Bolsista", payer: { email: "bia@exemplo.com", first_name: "Bia" } },
   1004: { id: 1004, status: "approved", transaction_amount: 10, description: "Outra coisa qualquer", payer: { email: "c@exemplo.com" } },
   1005: { id: 1005, status: "approved", transaction_amount: 50, description: "Paralaxe Escuta Ouvinte", payer: { email: "dan@exemplo.com", first_name: "<script>alert(1)</script>" } },
+  1007: { id: 1007, status: "approved", transaction_amount: 80, description: "Grupo de Estudos: Psicanálise em Paralaxe", payer: { email: "eva@exemplo.com", first_name: "Eva" } },
+  1008: { id: 1008, status: "approved", transaction_amount: 50, description: "Grupo de Supervisão: Escuta Clínica - mod. ouvinte", payer: { email: "fia@exemplo.com", first_name: "Fia" } },
+  1009: { id: 1009, status: "approved", transaction_amount: 90, description: "Grupo de supervisão Escuta Clínica - Mod. Analista", payer: { email: "gui@exemplo.com", first_name: "Gui" } },
+  1010: { id: 1010, status: "approved", transaction_amount: 80, description: "Grupo de Estudos: Psicanálise em Paralaxe", payer: { email: "eva@exemplo.com", first_name: "Eva" } },
   1006: { id: 1006, status: "approved", transaction_amount: 50, description: "Paralaxe Escuta Ouvinte", payer: { email: "dan@exemplo.com", first_name: "Dan" } },
 };
 const assinaturas = {
@@ -83,6 +87,15 @@ r = await chamar({ id: 1005 });
 confere("avulso (ouvinte) 1ª compra envia", r.json.enviado === "escuta-ouvinte" && r.enviados.length === 2, JSON.stringify(r));
 r = await chamar({ id: 1006 });
 confere("avulso (ouvinte) 2ª compra, outro pagamento, também envia", r.json.enviado === "escuta-ouvinte" && r.enviados.length === 2, JSON.stringify(r));
+
+r = await chamar({ id: 1007 });
+confere("título real do link de R$ 80 cai em estudos", r.json.enviado === "estudos" && r.enviados.length === 2, JSON.stringify(r));
+r = await chamar({ id: 1008 });
+confere("título real do link de R$ 50 cai em escuta-ouvinte", r.json.enviado === "escuta-ouvinte", JSON.stringify(r));
+r = await chamar({ id: 1009 });
+confere("título real do link de R$ 90 cai em escuta-analista", r.json.enviado === "escuta-analista", JSON.stringify(r));
+r = await chamar({ id: 1010 });
+confere("mensalidade do mês seguinte (outro pagamento) manda e-mail de novo", r.json.enviado === "estudos" && r.enviados.length === 2, JSON.stringify(r));
 
 r = await chamar({ tipo: "subscription_preapproval", id: "sub-1" });
 confere("assinatura cancelada avisa a Polyana", r.json.aviso === "cancelled" && r.enviados.length === 1 && /cancelada/.test(r.enviados[0]), JSON.stringify(r));

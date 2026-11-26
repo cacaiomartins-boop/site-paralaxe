@@ -18,7 +18,7 @@ export const produtos = [
     chave: "estudos-bolsista",
     nome: "Psicanálise em Paralaxe (bolsista)",
     tipo: "assinatura",
-    match: ["paralaxe estudos bolsista"],
+    match: ["bolsista"],
     planId: "",
     horario: "Terças-feiras, 20h30, on-line",
     links: so([
@@ -30,8 +30,10 @@ export const produtos = [
   {
     chave: "estudos",
     nome: "Psicanálise em Paralaxe",
-    tipo: "assinatura",
-    match: ["paralaxe estudos"],
+    // Até fevereiro a mensalidade é um link de pagamento avulso (cada mês é um pagamento novo).
+    // Quando a Polyana criar o plano recorrente, volte para "assinatura".
+    tipo: "avulso",
+    match: ["paralaxe estudos", "psicanalise em paralaxe"],
     planId: "",
     horario: "Terças-feiras, 20h30, on-line",
     links: so([
@@ -44,7 +46,7 @@ export const produtos = [
     chave: "escuta-ouvinte",
     nome: "Escuta Clínica (ouvinte)",
     tipo: "avulso",
-    match: ["paralaxe escuta ouvinte"],
+    match: ["paralaxe escuta ouvinte", "escuta clinica mod ouvinte"],
     planId: "",
     horario: "Quartas-feiras, 20h às 21h30, on-line",
     links: so([
@@ -56,7 +58,7 @@ export const produtos = [
     chave: "escuta-analista",
     nome: "Escuta Clínica (analista)",
     tipo: "avulso",
-    match: ["paralaxe escuta analista"],
+    match: ["paralaxe escuta analista", "escuta clinica mod analista"],
     planId: "",
     horario: "Quartas-feiras, 20h às 21h30, on-line",
     links: so([
