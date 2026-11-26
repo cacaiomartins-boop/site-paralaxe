@@ -309,7 +309,7 @@ export const combinados = [
   },
   {
     t: "Link só para inscritos",
-    d: "O link do encontro chega por WhatsApp ou e-mail, depois da inscrição.",
+    d: "O link do encontro chega pelo grupo de WhatsApp, depois do pagamento.",
   },
   {
     t: "Sem reembolso",
@@ -435,7 +435,7 @@ export const faq = [
   },
   {
     q: "Como recebo o link dos encontros?",
-    a: "Depois da inscrição, pelo grupo de WhatsApp ou por e-mail. Os encontros acontecem on-line, pelo Google Meet.",
+    a: "Depois do pagamento, pelo grupo de WhatsApp: a Polyana posta o link no grupo. Os encontros acontecem on-line, pelo Google Meet.",
   },
   {
     q: "Os encontros ficam gravados?",
