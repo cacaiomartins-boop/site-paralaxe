@@ -34,6 +34,8 @@ export const produtos = [
     // Quando a Polyana criar o plano recorrente, volte para "assinatura".
     tipo: "avulso",
     match: ["paralaxe estudos", "psicanalise em paralaxe"],
+    titulo: "Grupo de Estudos: Psicanálise em Paralaxe", // título que aparece no Mercado Pago
+    preco: 80,
     planId: "",
     horario: "Terças-feiras, 20h30, on-line",
     links: so([
@@ -47,6 +49,8 @@ export const produtos = [
     nome: "Escuta Clínica (ouvinte)",
     tipo: "avulso",
     match: ["paralaxe escuta ouvinte", "escuta clinica mod ouvinte"],
+    titulo: "Grupo de Supervisão: Escuta Clínica - mod. ouvinte",
+    preco: 50,
     planId: "",
     horario: "Quartas-feiras, 20h às 21h30, on-line",
     links: so([
@@ -59,6 +63,8 @@ export const produtos = [
     nome: "Escuta Clínica (analista)",
     tipo: "avulso",
     match: ["paralaxe escuta analista", "escuta clinica mod analista"],
+    titulo: "Grupo de Supervisão: Escuta Clínica - mod. analista",
+    preco: 90,
     planId: "",
     horario: "Quartas-feiras, 20h às 21h30, on-line",
     links: so([

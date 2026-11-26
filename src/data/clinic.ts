@@ -75,10 +75,25 @@ export const pagamentos = {
 
 export type PagamentoKey = keyof typeof pagamentos;
 
-// Chave geral do e-mail automático (api/mp-webhook.js).
-// false = a Polyana ainda manda o convite na mão: o site mantém o formulário e não promete e-mail.
-// Troque para true só depois de configurar Resend, Upstash e as variáveis na Vercel (veja PAGAMENTOS-LEIA-ME.md).
-export const automacaoAtiva = false;
+// Como o site cuida da inscrição (veja PAGAMENTOS-LEIA-ME.md):
+//  "manual"   = formulário do Google + links de pagamento; a Polyana manda o convite na mão.
+//  "verificado" = sem formulário: o botão cria o pagamento pelo site, e a página de volta CONFERE no Mercado Pago que
+//               foi aprovado antes de mostrar o convite. Só precisa que a Polyana autorize a conta com um clique
+//               (api/conectar.js). O grupo público some do site. Guia: PAGAMENTOS-VERIFICADO.md.
+//  "direto"   = sem formulário: botão de pagar + botão do grupo de WhatsApp. Não confere o pagamento; a Polyana
+//               pode ligar "Aprovar novos participantes" no grupo e liberar só quem aparece no Mercado Pago.
+//  "email"    = só os links de pagamento; quem paga recebe o convite por e-mail sozinho (api/mp-webhook.js).
+//               Troque para este quando o webhook estiver no ar (token do Mercado Pago + Resend na Vercel).
+//  "completo" = formulário próprio do site (api/inscricao.js) + pagamento + e-mail. Precisa também do Upstash.
+// Nos modos "email" e "completo" o grupo público de WhatsApp some do site: o convite só vai por e-mail.
+export const modoInscricao = "direto" as "manual" | "direto" | "verificado" | "email" | "completo";
+// true = o botão de pagar passa por api/pagar.js e a página /obrigado.html confere o pagamento e mostra os links.
+export const modoVerificado = modoInscricao === "verificado";
+export const automacaoAtiva = modoInscricao === "completo";
+// true = só o botão de pagar e o botão do grupo, sem formulário e sem conferir o pagamento (a Polyana confere no Mercado Pago).
+export const modoDireto = modoInscricao === "direto";
+// true = a pessoa paga pelo link do Mercado Pago e recebe o convite por e-mail sozinha (só api/mp-webhook.js).
+export const emailAutomatico = modoInscricao === "email" || modoInscricao === "completo";
 
 // Mostra o link "Termos e privacidade" no rodapé. Só vira true depois que a Polyana revisar public/privacidade.html.
 export const termosProntos = false;
@@ -86,17 +101,49 @@ export const termosProntos = false;
 /** Vira true assim que o primeiro link de pagamento for colado. */
 export const pagamentoAtivo = Object.values(pagamentos).some((p) => p.link);
 
+// Serviços que aparecem no formulário de inscrição do site (preços de verdade ficam em api/_produtos.js).
+export const servicosInscricao = [
+  { key: "estudos", nome: "Psicanálise em Paralaxe", detalhe: "Grupo de estudos · mensalidade", preco: 80 },
+  { key: "escuta-ouvinte", nome: "Escuta Clínica · ouvinte", detalhe: "Supervisão em grupo", preco: 50 },
+  { key: "escuta-analista", nome: "Escuta Clínica · analista", detalhe: "Supervisão em grupo, com relato de caso", preco: 90 },
+] as const;
+
+export type ServicoKey = (typeof servicosInscricao)[number]["key"];
+
+/** Serviço sugerido quando a pessoa clica em um dos dois espaços. */
+export const servicoDoEspaco: Record<"estudos" | "escuta", ServicoKey> = {
+  estudos: "estudos",
+  escuta: "escuta-ouvinte",
+};
+
+// Diretrizes mostradas no formulário (as mesmas do formulário antigo do Google).
+export const diretrizes = [
+  "É proibida a gravação de áudio e de vídeo, bem como a reprodução do conteúdo e o compartilhamento com pessoas não participantes, exceto sob autorização da organizadora.",
+  "Ao se inscrever, você autoriza o uso de imagem (via prints da sala virtual) para fins de divulgação.",
+  "Em caso de desistência depois de efetuada a inscrição, não haverá reembolso do valor da contribuição.",
+];
+
 // Quais botões de pagamento cada espaço mostra.
 export const pagamentosDoEspaco: Record<"estudos" | "escuta", PagamentoKey[]> = {
   estudos: ["estudos"],
   escuta: ["ouvinte", "analista"],
 };
 
-/** Botões de pagamento que já têm link colado. */
+const SERVICO_DO_BOTAO: Partial<Record<PagamentoKey, ServicoKey>> = {
+  estudos: "estudos",
+  ouvinte: "escuta-ouvinte",
+  analista: "escuta-analista",
+};
+
+/** Botões de pagamento. No modo "verificado" passam pelo servidor do site; nos outros usam o link colado. */
 export function botoesDePagamento(espaco: "estudos" | "escuta") {
   return pagamentosDoEspaco[espaco]
-    .filter((k) => pagamentos[k].link)
-    .map((k) => ({ key: k, label: pagamentos[k].label, href: pagamentos[k].link }));
+    .filter((k) => modoVerificado || pagamentos[k].link)
+    .map((k) => ({
+      key: k,
+      label: pagamentos[k].label,
+      href: modoVerificado ? `/api/pagar?servico=${SERVICO_DO_BOTAO[k]}` : pagamentos[k].link,
+    }));
 }
 
 // Propostas extras, mostradas abaixo dos dois espaços. Datas e valores: combinar com a Polyana.
@@ -305,17 +352,59 @@ export const passosPagamentoManual = {
   ],
 };
 
-// Passos da inscrição quando o pagamento pelo site e o e-mail automático estão ativos.
-export const passosPagamento = {
+// Passos da inscrição no modo "verificado": paga e o convite aparece na tela depois de aprovado.
+export const passosVerificado = {
   estudos: [
-    "Clique em Mensalidade e pague pelo Mercado Pago. Informe um e-mail que você confere: é nele que chega o convite.",
-    "Você recebe nesse e-mail o comprovante, o convite do grupo de WhatsApp e o link do encontro.",
-    "Receba o material de leitura na pasta de referências.",
+    "Clique em Mensalidade e pague pelo Mercado Pago (Pix, cartão ou boleto).",
+    "Assim que o pagamento for aprovado, você volta ao site e o convite do grupo aparece na tela.",
+    "Entre no grupo, guarde a página e participe do próximo encontro.",
   ],
   escuta: [
-    "Escolha a modalidade, ouvinte ou analista, e pague pelo Mercado Pago. Informe um e-mail que você confere: é nele que chega o convite.",
-    "Você recebe nesse e-mail o comprovante, o convite do grupo de WhatsApp e o link do encontro.",
+    "Escolha a modalidade, ouvinte ou analista, e pague pelo Mercado Pago (Pix, cartão ou boleto).",
+    "Assim que o pagamento for aprovado, você volta ao site e o convite do grupo aparece na tela.",
+    "Entre no grupo, guarde a página e participe do próximo encontro.",
+  ],
+};
+
+// Passos da inscrição no modo "direto": paga em outra aba, volta ao site e o botão do grupo aparece.
+export const passosDireto = {
+  estudos: [
+    "Clique em Mensalidade e pague pelo Mercado Pago (Pix, cartão ou boleto): ele abre em outra aba.",
+    "Quando terminar, volte para esta página: o botão de entrar no grupo aparece.",
+    "Entre no grupo. O acesso só é liberado após a confirmação do pagamento: a Polyana confere e aprova a sua entrada.",
+  ],
+  escuta: [
+    "Escolha a modalidade, ouvinte ou analista, e pague pelo Mercado Pago (Pix, cartão ou boleto): ele abre em outra aba.",
+    "Quando terminar, volte para esta página: o botão de entrar no grupo aparece.",
+    "Entre no grupo. O acesso só é liberado após a confirmação do pagamento: a Polyana confere e aprova a sua entrada.",
+  ],
+};
+
+// Passos da inscrição no modo "email": paga pelo link e recebe o convite no e-mail do pagamento.
+export const passosEmail = {
+  estudos: [
+    "Clique em Mensalidade e pague pelo Mercado Pago (Pix, cartão ou boleto). Informe um e-mail que você confere: é nele que chega o convite.",
+    "Em poucos minutos você recebe nesse e-mail o convite do grupo de WhatsApp e o link do encontro.",
     "Entre no grupo e participe do próximo encontro.",
+  ],
+  escuta: [
+    "Escolha a modalidade, ouvinte ou analista, e pague pelo Mercado Pago (Pix, cartão ou boleto). Informe um e-mail que você confere: é nele que chega o convite.",
+    "Em poucos minutos você recebe nesse e-mail o convite do grupo de WhatsApp e o link do encontro.",
+    "Entre no grupo e participe do próximo encontro.",
+  ],
+};
+
+// Passos da inscrição quando o formulário próprio, o pagamento e o e-mail automático estão ativos.
+export const passosPagamento = {
+  estudos: [
+    "Preencha a inscrição com os seus dados e um e-mail que você confere: é nele que chega o convite.",
+    "Pague pelo Mercado Pago (Pix, cartão ou boleto).",
+    "Você recebe nesse e-mail o comprovante, o convite do grupo de WhatsApp e o link do encontro.",
+  ],
+  escuta: [
+    "Preencha a inscrição, escolha a modalidade (ouvinte ou analista) e use um e-mail que você confere: é nele que chega o convite.",
+    "Pague pelo Mercado Pago (Pix, cartão ou boleto).",
+    "Você recebe nesse e-mail o comprovante, o convite do grupo de WhatsApp e o link do encontro.",
   ],
 };
 
@@ -352,7 +441,15 @@ export const faq = [
     q: "Os encontros ficam gravados?",
     a: "Não. As gravações e o compartilhamento dos encontros não são permitidos.",
   },
-  ...(pagamentoAtivo && automacaoAtiva
+  ...(modoVerificado
+    ? [
+        {
+          q: "O que acontece depois que eu pago?",
+          a: "Quando o Mercado Pago aprova o pagamento, você volta automaticamente ao site, e uma página mostra o convite do grupo de WhatsApp e os links do encontro. Guarde essa página nos favoritos. Se fechar sem querer ou o pagamento demorar (como no boleto), chame a Polyana pelo Instagram @paralaxeslab com o comprovante.",
+        },
+      ]
+    : []),
+  ...(pagamentoAtivo && emailAutomatico
     ? [
         {
           q: "Para qual e-mail vai o convite?",

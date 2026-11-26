@@ -1,5 +1,22 @@
 import { useState } from "react";
-import { spaces, passos, passosPagamento, passosPagamentoManual, botoesDePagamento, avisoEmail, automacaoAtiva } from "../data/clinic";
+import {
+  spaces,
+  passos,
+  passosPagamento,
+  passosPagamentoManual,
+  passosEmail,
+  emailAutomatico,
+  modoDireto,
+  passosDireto,
+  modoVerificado,
+  passosVerificado,
+  botoesDePagamento,
+  avisoEmail,
+  automacaoAtiva,
+  servicoDoEspaco,
+} from "../data/clinic";
+import { abrirInscricao } from "../inscricaoBus";
+import { avisarPagamento } from "../posPagamentoBus";
 
 type Key = "estudos" | "escuta";
 
@@ -8,7 +25,20 @@ export default function Inscricao() {
   const s = spaces[k];
   const tone = k === "estudos" ? "bg-sol" : "bg-ceu";
   const pagar = botoesDePagamento(k);
-  const lista = pagar.length > 0 ? (automacaoAtiva ? passosPagamento[k] : passosPagamentoManual[k]) : passos[k];
+  const modoEmail = emailAutomatico && !automacaoAtiva && pagar.length > 0;
+  const direto = modoDireto && pagar.length > 0;
+  const verificado = modoVerificado && pagar.length > 0;
+  const lista = automacaoAtiva
+    ? passosPagamento[k]
+    : verificado
+      ? passosVerificado[k]
+      : modoEmail
+      ? passosEmail[k]
+      : direto
+        ? passosDireto[k]
+        : pagar.length > 0
+          ? passosPagamentoManual[k]
+          : passos[k];
 
   return (
     <section id="inscricao" className="screen bg-noite text-papel">
@@ -58,7 +88,7 @@ export default function Inscricao() {
               ))}
             </ol>
 
-            {pagar.length > 0 && automacaoAtiva && (
+            {(automacaoAtiva || modoEmail) && (
               <p className="mt-5 flex items-start gap-3 rounded-2xl bg-tinta p-3.5 text-sm font-semibold leading-snug text-papel">
                 <span aria-hidden="true" className="text-lg leading-none text-sol">
                   ✉
@@ -73,34 +103,53 @@ export default function Inscricao() {
               {k === "escuta"
                 ? "Valores: ouvinte R$ 50, analista R$ 90. Sem reembolso em caso de desistência."
                 : "Contribuição mensal de R$ 80. De vez em quando, promovemos encontros abertos e gratuitos. Há também vagas de bolsista: veja em Dúvidas."}{" "}
-              {pagar.length > 0 && automacaoAtiva
+              {automacaoAtiva || modoEmail || direto || verificado
                 ? ""
                 : "O formulário abre em uma nova aba e pode pedir que você entre com a sua conta Google."}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-3">
-              {automacaoAtiva &&
+              {automacaoAtiva ? (
+                <button type="button" onClick={() => abrirInscricao(servicoDoEspaco[k])} className="btn btn-ink !py-3">
+                  Inscrever-se e pagar
+                </button>
+              ) : modoEmail || verificado ? (
                 pagar.map((b) => (
                   <a key={b.key} href={b.href} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-3">
                     {b.label}
                   </a>
-                ))}
-              {(pagar.length === 0 || !automacaoAtiva) && (
-                <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-3">
-                  Abrir formulário
-                </a>
+                ))
+              ) : direto ? (
+                pagar.map((b) => (
+                  <a
+                    key={b.key}
+                    href={b.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => avisarPagamento(k)}
+                    className="btn btn-ink !py-3"
+                  >
+                    {b.label}
+                  </a>
+                ))
+              ) : (
+                <>
+                  <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-3">
+                    Abrir formulário
+                  </a>
+                  <a
+                    href={s.group}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-line !py-3 text-tinta hover:!bg-tinta/10"
+                  >
+                    Entrar no grupo de WhatsApp
+                  </a>
+                </>
               )}
-              <a
-                href={s.group}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-line !py-3 text-tinta hover:!bg-tinta/10"
-              >
-                Entrar no grupo de WhatsApp
-              </a>
             </div>
 
-            {pagar.length > 0 && !automacaoAtiva && (
+            {pagar.length > 0 && !automacaoAtiva && !modoEmail && !direto && !verificado && (
               <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
                 <span className="font-semibold">Já preencheu o formulário? Pague aqui:</span>
                 {pagar.map((b) => (

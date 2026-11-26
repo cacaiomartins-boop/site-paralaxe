@@ -43,15 +43,30 @@ ${email ? `<p style="margin:14px 0 0;font-size:12px;color:#7a6f66;">Enviado para
   };
 }
 
-export function emailPolyanaNovo({ produto, nome, email, valor }) {
+const FORMACAO = {
+  estudante: "Estudante de psicologia",
+  psicologo: "Psicólogo(a)",
+  psicanalista: "Psicanalista",
+  "outra-area": "Profissional de outra área",
+  outro: "Outro",
+};
+const ORIGEM = { instagram: "Instagram", indicacao: "Indicação", outro: "Outro" };
+
+export function emailPolyanaNovo({ produto, nome, email, valor, whatsapp, formacao, origem }) {
+  const zap = whatsapp ? String(whatsapp).replace(/\D/g, "") : "";
+  const nomeZap = esc(String(nome || "").split(" ")[0]);
   const corpo = `
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
 ${linha("Pessoa", esc(nome || "(sem nome)"))}
 ${linha("E-mail", esc(email))}
+${zap ? linha("WhatsApp", `+${esc(zap)}`) : ""}
 ${linha("Servi&ccedil;o", `<strong>${esc(produto.nome)}</strong>`)}
 ${linha("Valor", esc(brl(valor)) || "-")}
+${formacao && FORMACAO[formacao] ? linha("Forma&ccedil;&atilde;o", esc(FORMACAO[formacao])) : ""}
+${origem && ORIGEM[origem] ? linha("Conheceu por", esc(ORIGEM[origem])) : ""}
 </table>
-<p style="margin:0;font-size:14px;line-height:1.5;color:#4a4039;">A pessoa j&aacute; recebeu por e-mail o convite do grupo e os links. Antes do pr&oacute;ximo encontro, confira se ela entrou no grupo e, se precisar, adicione.</p>`;
+${zap ? botao(`Falar com ${nomeZap || "a pessoa"} no WhatsApp`, `https://wa.me/${zap}`) : ""}
+<p style="margin:12px 0 0;font-size:14px;line-height:1.5;color:#4a4039;">A pessoa j&aacute; recebeu por e-mail o convite do grupo e os links. Se o grupo exige aprova&ccedil;&atilde;o de novos participantes, aprove quem entrar com este nome. Antes do pr&oacute;ximo encontro, confira se ela entrou e, se precisar, adicione.</p>`;
   return {
     assunto: `Novo pagamento: ${nome || email} · ${produto.nome}`,
     html: moldura("Novo pagamento", corpo),

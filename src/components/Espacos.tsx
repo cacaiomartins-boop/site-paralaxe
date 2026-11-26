@@ -1,10 +1,24 @@
-import { automacaoAtiva, avisoEmail, botoesDePagamento, links, pagamentos, propostas, spaces } from "../data/clinic";
+import { avisarPagamento } from "../posPagamentoBus";
+import {
+  automacaoAtiva,
+  avisoEmail,
+  botoesDePagamento,
+  emailAutomatico,
+  modoDireto,
+  modoVerificado,
+  links,
+  pagamentos,
+  propostas,
+  servicoDoEspaco,
+  spaces,
+} from "../data/clinic";
+import { abrirInscricao } from "../inscricaoBus";
 
 type Space = typeof spaces.estudos;
 
 function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string }) {
   const bg = tone === "sol" ? "bg-sol" : "bg-ceu";
-  const pagar = automacaoAtiva ? botoesDePagamento(s.id as "estudos" | "escuta") : [];
+  const pagar = (emailAutomatico || modoDireto || modoVerificado) && !automacaoAtiva ? botoesDePagamento(s.id as "estudos" | "escuta") : [];
   return (
     <article
       id={s.id}
@@ -28,27 +42,46 @@ function Card({ s, tone, delay }: { s: Space; tone: "sol" | "ceu"; delay: string
       </dl>
 
       <div className="mt-auto flex flex-wrap gap-3 pt-5 lg:pt-2">
-        {pagar.length > 0 ? (
-          pagar.map((b) => (
-            <a key={b.key} href={b.href} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-2.5">
-              {b.label}
-            </a>
-          ))
-        ) : (
-          <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-2.5">
+        {automacaoAtiva ? (
+          <button
+            type="button"
+            onClick={() => abrirInscricao(servicoDoEspaco[s.id as "estudos" | "escuta"])}
+            className="btn btn-ink !py-2.5"
+          >
             {s.cta}
-          </a>
+          </button>
+        ) : pagar.length > 0 ? (
+          <>
+            {pagar.map((b) => (
+              <a
+                key={b.key}
+                href={b.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={modoDireto ? () => avisarPagamento(s.id as "estudos" | "escuta") : undefined}
+                className="btn btn-ink !py-2.5"
+              >
+                {b.label}
+              </a>
+            ))}
+          </>
+        ) : (
+          <>
+            <a href={s.form} target="_blank" rel="noopener noreferrer" className="btn btn-ink !py-2.5">
+              {s.cta}
+            </a>
+            <a
+              href={s.group}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-line !py-2.5 text-tinta hover:!bg-tinta/10"
+            >
+              Grupo no WhatsApp
+            </a>
+          </>
         )}
-        <a
-          href={s.group}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-line !py-2.5 text-tinta hover:!bg-tinta/10"
-        >
-          Grupo no WhatsApp
-        </a>
       </div>
-      {pagar.length > 0 && automacaoAtiva && (
+      {(automacaoAtiva || (pagar.length > 0 && !modoDireto)) && (
         <p className="mt-1.5 text-[0.78rem] font-semibold leading-tight text-tinta/80">✉ {avisoEmail}</p>
       )}
     </article>

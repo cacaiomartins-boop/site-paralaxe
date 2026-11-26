@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
-    <title>Pagamento recebido | Paralaxe</title>
+    <title>Pagamento | Paralaxe</title>
     <link rel="icon" type="image/png" href="/img/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,32 +24,114 @@
         color: #f4ece0;
         font-family: "Instrument Sans", system-ui, sans-serif;
       }
-      main { max-width: 34rem; }
+      main { max-width: 34rem; width: 100%; }
       img { width: 64px; height: auto; }
       h1 { font-family: "Fraunces", Georgia, serif; font-weight: 300; font-size: clamp(2.2rem, 7vw, 3.4rem); line-height: 1; margin: 20px 0 16px; letter-spacing: -0.02em; }
       h1 em { color: #f0b429; }
       p { line-height: 1.6; color: rgba(244, 236, 224, 0.82); margin: 0 0 14px; }
       .aviso { background: #f0b429; color: #1c1511; padding: 12px 16px; border-radius: 14px; font-weight: 600; }
       .dica { font-size: 0.92rem; color: rgba(244, 236, 224, 0.6); }
-      a.btn { display: inline-block; margin-top: 12px; background: #f0b429; color: #1c1511; text-decoration: none; font-weight: 600; padding: 14px 26px; border-radius: 999px; }
+      .acoes { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 8px; }
+      a.btn { display: inline-block; background: #f0b429; color: #1c1511; text-decoration: none; font-weight: 600; padding: 14px 26px; border-radius: 999px; }
+      a.btn.linha { background: transparent; color: #f4ece0; border: 1px solid rgba(244, 236, 224, 0.5); }
+      [hidden] { display: none !important; }
     </style>
   </head>
   <body>
     <main>
       <img src="/img/logo.png" alt="Paralaxe" width="64" height="64" />
-      <h1>Pagamento <em>recebido.</em></h1>
-      <p>
-        Em instantes você recebe um e-mail com o comprovante, o convite do grupo de WhatsApp e o
-        link do encontro.
-      </p>
-      <p class="aviso">
-        ✉ Ele vai para o <strong>e-mail que você informou no pagamento</strong>. Fique de olho nele.
-      </p>
-      <p class="dica">
-        Não chegou? Confira a caixa de spam e a aba Promoções. Se ainda assim não aparecer em alguns
-        minutos, chame a Polyana no Instagram @paralaxeslab.
-      </p>
-      <a class="btn" href="/">Voltar ao site</a>
+
+      <section id="conferindo">
+        <h1>Conferindo o <em>pagamento…</em></h1>
+        <p>Isso leva só alguns segundos. Não feche esta página.</p>
+      </section>
+
+      <section id="aprovado" hidden>
+        <h1>Pagamento <em>aprovado.</em></h1>
+        <p id="boas-vindas"></p>
+        <div class="acoes" id="acoes"></div>
+        <p class="aviso">Guarde esta página nos favoritos: ela traz os seus links de acesso.</p>
+        <p class="dica">Se o grupo pedir aprovação para entrar, a Polyana libera assim que confirmar o seu pagamento.</p>
+      </section>
+
+      <section id="pendente" hidden>
+        <h1>Aguardando a <em>confirmação.</em></h1>
+        <p>O pagamento ainda não foi confirmado pelo Mercado Pago (no Pix, costuma levar poucos segundos; no boleto, até 2 dias úteis). Esta página confere sozinha, então pode deixá-la aberta.</p>
+      </section>
+
+      <section id="problema" hidden>
+        <h1>Não conseguimos <em>confirmar.</em></h1>
+        <p id="problema-texto">Não encontramos um pagamento aprovado para este acesso.</p>
+        <p class="dica">Se você acabou de pagar, aguarde um minuto e atualize a página. Se continuar assim, chame a Polyana no Instagram @paralaxeslab, com o comprovante.</p>
+      </section>
+
+      <section id="sem-dados" hidden>
+        <h1>Esta página é para <em>quem pagou.</em></h1>
+        <p>Para pagar e receber o acesso, volte ao site e escolha o seu serviço.</p>
+      </section>
+
+      <p style="margin-top: 24px"><a class="btn linha" href="/">Voltar ao site</a></p>
     </main>
+
+    <script>
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var pagamento = q.get("payment_id") || q.get("collection_id") || "";
+        var ref = q.get("external_reference") || "";
+
+        function mostrar(id) {
+          ["conferindo", "aprovado", "pendente", "problema", "sem-dados"].forEach(function (s) {
+            document.getElementById(s).hidden = s !== id;
+          });
+        }
+
+        if (!ref || !pagamento || pagamento === "null") {
+          // Pix ainda sem número de pagamento, ou acesso direto à página
+          mostrar(ref ? "pendente" : "sem-dados");
+          return;
+        }
+
+        var tentativas = 0;
+        function conferir() {
+          tentativas++;
+          fetch("/api/verificar?payment_id=" + encodeURIComponent(pagamento) + "&ref=" + encodeURIComponent(ref), { cache: "no-store" })
+            .then(function (r) { return r.json(); })
+            .then(function (j) {
+              if (j.ok) {
+                document.getElementById("boas-vindas").textContent = "Bem-vinda(o) a " + j.nome + ". " + (j.horario || "");
+                var box = document.getElementById("acoes");
+                box.textContent = "";
+                (j.links || []).forEach(function (l, i) {
+                  var a = document.createElement("a");
+                  a.className = "btn" + (i ? " linha" : "");
+                  a.href = l.url;
+                  a.target = "_blank";
+                  a.rel = "noopener noreferrer";
+                  a.textContent = l.label;
+                  box.appendChild(a);
+                });
+                if (!(j.links || []).length) {
+                  var p = document.createElement("p");
+                  p.textContent = "A Polyana vai entrar em contato com as datas e o link do encontro.";
+                  box.appendChild(p);
+                }
+                mostrar("aprovado");
+              } else if (j.estado === "pendente" && tentativas < 60) {
+                mostrar("pendente");
+                setTimeout(conferir, 5000);
+              } else if (j.estado === "pendente") {
+                mostrar("pendente");
+              } else {
+                mostrar("problema");
+              }
+            })
+            .catch(function () {
+              if (tentativas < 5) setTimeout(conferir, 4000);
+              else mostrar("problema");
+            });
+        }
+        conferir();
+      })();
+    </script>
   </body>
 </html>

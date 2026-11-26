@@ -13,6 +13,8 @@ import Inscricao from "./components/Inscricao";
 import Faq from "./components/Faq";
 import EmBreve from "./components/EmBreve";
 import Footer from "./components/Footer";
+import InscricaoModal from "./components/InscricaoModal";
+import PosPagamento from "./components/PosPagamento";
 
 /** Botão fixo no celular: aparece depois do topo e some quando a inscrição está na tela. */
 function StickyCta() {
@@ -80,6 +82,8 @@ export default function App() {
         <EmBreve />
       </main>
       <Footer />
+      <InscricaoModal />
+      <PosPagamento />
       <StickyCta />
     </div>
   );

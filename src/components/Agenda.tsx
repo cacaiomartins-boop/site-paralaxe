@@ -1,4 +1,5 @@
-import { events, spaces, type AgendaEvent } from "../data/clinic";
+import { automacaoAtiva, emailAutomatico, modoDireto, modoVerificado, events, servicoDoEspaco, spaces, type AgendaEvent } from "../data/clinic";
+import { abrirInscricao } from "../inscricaoBus";
 
 const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 const dias = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
@@ -42,16 +43,29 @@ function Row({ e, past }: { e: AgendaEvent; past?: boolean }) {
         <h3 className="mt-2.5 text-xl font-medium leading-tight sm:text-2xl">{e.title}</h3>
         {e.text && <p className="mt-1.5 max-w-2xl text-[0.96rem] leading-relaxed text-papel/70">{e.text}</p>}
       </div>
-      {!past && (
-        <a
-          href={sp.form}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-line col-span-2 text-papel sm:col-span-1"
-        >
-          Inscrever-se
-        </a>
-      )}
+      {!past &&
+        (automacaoAtiva ? (
+          <button
+            type="button"
+            onClick={() => abrirInscricao(servicoDoEspaco[e.space])}
+            className="btn btn-line col-span-2 text-papel sm:col-span-1"
+          >
+            Inscrever-se
+          </button>
+        ) : emailAutomatico || modoDireto || modoVerificado ? (
+          <a href="#inscricao" className="btn btn-line col-span-2 text-papel sm:col-span-1">
+            Inscrever-se
+          </a>
+        ) : (
+          <a
+            href={sp.form}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-line col-span-2 text-papel sm:col-span-1"
+          >
+            Inscrever-se
+          </a>
+        ))}
     </li>
   );
 }

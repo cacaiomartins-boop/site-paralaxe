@@ -9,16 +9,18 @@ import {
   emailPolyana,
   mp,
   norm,
+  lerInscricao,
+  inscricaoPorEmail,
 } from "./_lib.js";
 import { emailAluno, emailPolyanaNovo, emailPolyanaFim, emailPolyanaDesconhecido } from "./_emails.js";
 
 const nomeCompleto = (p) => [p?.first_name, p?.last_name].filter(Boolean).join(" ").trim();
 
-async function avisarPolyana(msg) {
+async function avisarPolyana(msg, idempotencia) {
   const para = emailPolyana();
   if (!para) return console.warn("POLYANA_EMAIL não configurado: aviso à Polyana ignorado");
   try {
-    await enviarEmail({ para, ...msg });
+    await enviarEmail({ para, ...msg, idempotencia });
   } catch (e) {
     console.error("Falha ao avisar a Polyana:", e.message); // não derruba o envio ao aluno
   }
@@ -41,12 +43,18 @@ async function liberarAcesso(d) {
 
   try {
     const msg = emailAluno({ produto, nome: d.nome, valor: d.valor, email: d.email });
-    await enviarEmail({ para: d.email, assunto: msg.assunto, html: msg.html, responderPara: emailPolyana() });
+    await enviarEmail({
+      para: d.email,
+      assunto: msg.assunto,
+      html: msg.html,
+      responderPara: emailPolyana(),
+      idempotencia: `aluno-${d.idUnico}`,
+    });
   } catch (e) {
     await liberar(chave); // o Mercado Pago tenta de novo
     throw e;
   }
-  await avisarPolyana(emailPolyanaNovo({ produto, ...d }));
+  await avisarPolyana(emailPolyanaNovo({ produto, ...d }), `polyana-${d.idUnico}`);
   return { enviado: produto.chave };
 }
 
@@ -54,12 +62,24 @@ async function tratar(tipo, id) {
   if (tipo === "payment") {
     const pay = await mp(`/v1/payments/${id}`);
     if (pay.status !== "approved") return { ignorado: `pagamento ${pay.status}` };
+
+    // Pagamento feito pelo formulário do site: external_reference é o ID da inscrição.
+    // Pagamento por link antigo (mpago.la): tenta achar a inscrição pelo e-mail.
+    const ref = String(pay.external_reference || "");
+    let insc = /^[a-f0-9]{32}$/.test(ref) ? await lerInscricao(ref) : null;
+    if (!insc) insc = await inscricaoPorEmail(pay.payer?.email);
+
     return liberarAcesso({
       idUnico: `pay:${pay.id}`,
-      email: pay.payer?.email,
-      nome: nomeCompleto(pay.payer),
+      // O e-mail digitado no formulário (confirmado duas vezes) vale mais que o da conta do pagador.
+      email: insc?.email || pay.payer?.email,
+      nome: insc?.nome || nomeCompleto(pay.payer),
+      whatsapp: insc?.whatsapp,
+      formacao: insc?.formacao,
+      origem: insc?.origem,
+      produtoChave: ref === insc?.id ? insc?.servico : undefined,
       valor: pay.transaction_amount,
-      referencia: pay.external_reference,
+      referencia: ref,
       planId: pay.metadata?.preapproval_plan_id,
       textos: [pay.description, ...(pay.additional_info?.items || []).map((i) => i.title)],
     });
