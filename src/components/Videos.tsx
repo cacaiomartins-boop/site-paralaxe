@@ -33,7 +33,6 @@ function Reel({ v }: { v: Video }) {
           src={`https://www.instagram.com/reel/${v.id}/embed`}
           loading="lazy"
           allow="autoplay; encrypted-media; fullscreen"
-          allowFullScreen
           className="absolute left-0 top-0 border-0"
           style={{
             width: EMBED_W,

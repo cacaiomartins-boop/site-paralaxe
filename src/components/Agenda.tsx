@@ -1,5 +1,7 @@
 import { automacaoAtiva, emailAutomatico, modoDireto, modoVerificado, events, servicoDoEspaco, spaces, type AgendaEvent } from "../data/clinic";
 import { abrirInscricao } from "../inscricaoBus";
+import { useEffect, useState } from "react";
+import { dataDoBuild, hojeISO } from "../buildDate";
 
 const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 const dias = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
@@ -8,12 +10,6 @@ function parts(date: string) {
   const [y, m, d] = date.split("-").map(Number);
   const dt = new Date(y, m - 1, d);
   return { d: String(d).padStart(2, "0"), mes: meses[m - 1], dia: dias[dt.getDay()] };
-}
-
-function todayISO() {
-  const n = new Date();
-  const p = (x: number) => String(x).padStart(2, "0");
-  return `${n.getFullYear()}-${p(n.getMonth() + 1)}-${p(n.getDate())}`;
 }
 
 function Row({ e, past }: { e: AgendaEvent; past?: boolean }) {
@@ -71,7 +67,8 @@ function Row({ e, past }: { e: AgendaEvent; past?: boolean }) {
 }
 
 export default function Agenda() {
-  const hoje = todayISO();
+  const [hoje, setHoje] = useState(dataDoBuild);
+  useEffect(() => setHoje(hojeISO()), []);
   const sorted = [...events].sort((a, b) => a.date.localeCompare(b.date));
   const proximos = sorted.filter((e) => e.date >= hoje);
   const passados = sorted.filter((e) => e.date < hoje).reverse();

@@ -45,11 +45,14 @@ export default function Referencias() {
 
         <aside id="quem" className="reveal rounded-[2rem] bg-papel2 p-5 sm:p-6">
           <img
-            src="/img/polyana.webp"
+            src="/img/polyana-800.webp"
+            srcSet="/img/polyana-480.webp 480w, /img/polyana-800.webp 800w"
+            sizes="(min-width: 1024px) 520px, 90vw"
             alt={`${site.organizer}, organizadora do Paralaxe`}
-            width={1200}
-            height={1200}
+            width={800}
+            height={800}
             loading="lazy"
+            decoding="async"
             className="aspect-[16/9] w-full rounded-[1.4rem] object-cover object-[50%_28%]"
           />
           <p className="kicker mt-5 text-ferrugem">Organização</p>
